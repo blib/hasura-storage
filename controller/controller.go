@@ -182,12 +182,12 @@ func (ctrl *Controller) SetupRouter(
 		apiRoot.GET("/openapi.yaml", ctrl.OpenAPI)
 		apiRoot.GET("/version", ctrl.Version)
 	}
+	apiRoot.GET("/public/:id", ctrl.GetPublicFile)
 	files := apiRoot.Group("/files")
 	{
 		files.POST("", ctrl.UploadFile) // To delete
 		files.POST("/", ctrl.UploadFile)
 		files.GET("/:id", ctrl.GetFile)
-		files.GET("/public/:id", ctrl.GetPublicFile)
 		files.HEAD("/:id", ctrl.GetFileInformation)
 		files.PUT("/:id", ctrl.UpdateFile)
 		files.DELETE("/:id", ctrl.DeleteFile)
