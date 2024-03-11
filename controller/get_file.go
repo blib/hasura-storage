@@ -251,3 +251,53 @@ func (ctrl *Controller) GetFile(ctx *gin.Context) {
 
 	response.Write(ctx)
 }
+
+func (ctrl *Controller) getPublicFileProcess(ctx *gin.Context) (*FileResponse, *APIError) {
+	req, apiErr := ctrl.getFileParse(ctx)
+	if apiErr != nil {
+		return nil, apiErr
+	}
+
+	fileMetadata, bucketMetadata, apiErr := ctrl.getFileMetadata(
+		ctx.Request.Context(), req.fileID, true,
+		http.Header{"x-hasura-admin-secret": []string{ctrl.hasuraAdminSecret}},
+	)
+	if apiErr != nil {
+		return nil, apiErr
+	}
+
+	if bucketMetadata.ID != "public" {
+		return nil, NewAPIError(http.StatusNotFound, "file not found", nil, nil)
+	}
+
+	downloadFunc := func() (*File, *APIError) {
+		return ctrl.contentStorage.GetFile(ctx, fileMetadata.ID, ctx.Request.Header)
+	}
+
+	response, apiErr := ctrl.processFileToDownload(
+		ctx, downloadFunc, fileMetadata, bucketMetadata.CacheControl, &req.headers)
+	if apiErr != nil {
+		return nil, apiErr
+	}
+
+	if response.statusCode == http.StatusOK {
+		// if we want to download files at some point prepend `attachment;` before filename
+		response.headers.Add(
+			"Content-Disposition",
+			fmt.Sprintf(`inline; filename="%s"`, url.QueryEscape(fileMetadata.Name)),
+		)
+	}
+
+	return response, nil
+}
+
+func (ctrl *Controller) GetPublicFile(ctx *gin.Context) {
+	response, apiErr := ctrl.getPublicFileProcess(ctx)
+	if apiErr != nil {
+		_ = ctx.Error(apiErr)
+		ctx.JSON(apiErr.statusCode, GetFileResponse{apiErr.PublicResponse()})
+		return
+	}
+	defer response.body.Close()
+	response.Write(ctx)
+}

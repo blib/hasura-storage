@@ -187,6 +187,7 @@ func (ctrl *Controller) SetupRouter(
 		files.POST("", ctrl.UploadFile) // To delete
 		files.POST("/", ctrl.UploadFile)
 		files.GET("/:id", ctrl.GetFile)
+		files.GET("/public/:id", ctrl.GetPublicFile)
 		files.HEAD("/:id", ctrl.GetFileInformation)
 		files.PUT("/:id", ctrl.UpdateFile)
 		files.DELETE("/:id", ctrl.DeleteFile)
