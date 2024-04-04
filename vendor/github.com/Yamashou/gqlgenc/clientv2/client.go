@@ -14,6 +14,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/Yamashou/gqlgenc/graphqljson"
+	"github.com/sirupsen/logrus"
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
@@ -155,6 +156,9 @@ func (c *Client) Post(ctx context.Context, operationName, query string, respData
 		Variables:     vars,
 		OperationName: operationName,
 	}
+
+	xx, _ := json.Marshal(r)
+	logrus.Info("request: ", string(xx))
 
 	gqlInfo := NewGQLRequestInfo(r)
 	body := new(bytes.Buffer)
