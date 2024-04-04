@@ -5,8 +5,9 @@ import (
 	"errors"
 	"net/http"
 
+	"encoding/json"
+
 	"github.com/Yamashou/gqlgenc/clientv2"
-	"github.com/gin-gonic/gin/internal/json"
 	"github.com/nhost/hasura-storage/controller"
 	"github.com/sirupsen/logrus"
 )
