@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/Yamashou/gqlgenc/clientv2"
-	"github.com/gin-gonic/gin/internal/json"
 	"github.com/nhost/hasura-storage/controller"
 	"github.com/sirupsen/logrus"
 )
@@ -130,22 +129,24 @@ func (h *Hasura) InitializeFile(
 	fileID, name string, size int64, bucketID, mimeType string,
 	headers http.Header,
 ) *controller.APIError {
-	c, _ := json.Marshal(FilesInsertInput{
-		BucketID: ptr(bucketID),
-		ID:       ptr(fileID),
-		MimeType: ptr(mimeType),
-		Name:     ptr(name),
-		Size:     ptr(size),
-	})
-	logrus.Warnf("initializing file %s", string(c))
+	logrus.Warnf("initializing file %+v", FilesInsertInput{
+		BucketID:         ptr(bucketID),
+		ID:               ptr(fileID),
+		MimeType:         ptr(mimeType),
+		Name:             ptr(name),
+		Size:             ptr(size),
+		UploadedByUserID: nil,
+	},
+	)
 	_, err := h.cl.InsertFile(
 		ctx,
 		FilesInsertInput{
-			BucketID: ptr(bucketID),
-			ID:       ptr(fileID),
-			MimeType: ptr(mimeType),
-			Name:     ptr(name),
-			Size:     ptr(size),
+			BucketID:         ptr(bucketID),
+			ID:               ptr(fileID),
+			MimeType:         ptr(mimeType),
+			Name:             ptr(name),
+			Size:             ptr(size),
+			UploadedByUserID: nil,
 		},
 		WithHeaders(headers),
 	)
