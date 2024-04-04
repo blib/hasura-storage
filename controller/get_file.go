@@ -267,7 +267,7 @@ func (ctrl *Controller) getPublicFileProcess(ctx *gin.Context) (*FileResponse, *
 	}
 
 	if bucketMetadata.ID != "public" {
-		return nil, NewAPIError(http.StatusNotFound, "file not found", nil, nil)
+		return nil, NewAPIError(http.StatusNotFound, "file not found", fmt.Errorf("file not found"), nil)
 	}
 
 	downloadFunc := func() (*File, *APIError) {
