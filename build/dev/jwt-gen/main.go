@@ -33,7 +33,7 @@ func main() {
 
 	// Create the Claims
 	claims := &jwt.MapClaims{
-		"sub": "ab5ba58e-932a-40dc-87e8-733998794ec2",
+		"sub": "35163a5f-2603-4314-9eb8-d4226aafc069",
 		"iss": "hasura-auth",
 		"iat": iat,
 		"exp": exp,
@@ -42,7 +42,7 @@ func main() {
 				"admin",
 			},
 			"x-hasura-default-role":     "admin",
-			"x-hasura-user-id":          "ab5ba58e-932a-40dc-87e8-733998794ec2",
+			"x-hasura-user-id":          "35163a5f-2603-4314-9eb8-d4226aafc069",
 			"x-hasura-user-isAnonymous": "false",
 		},
 	}

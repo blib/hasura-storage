@@ -11,6 +11,7 @@ import (
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 )
 
 // this type is used to ensure we respond consistently no matter the case.
@@ -279,6 +280,7 @@ func parseUploadRequestNew(ctx *gin.Context) (uploadFileRequest, *APIError) {
 		}
 		if fileReq.ID == "" {
 			fileReq.ID = uuid.New().String()
+			logrus.Warnf("file id not provided, generated one: %s", fileReq.ID)
 		}
 		processedFiles[idx] = fileReq
 	}
@@ -306,6 +308,7 @@ func (ctrl *Controller) uploadFile(ctx *gin.Context) ([]FileMetadata, bool, *API
 		return nil, false, apiErr
 	}
 
+	ctrl.logger.Debugf("uploading files %+v", request)
 	filesMetadata, apiErr := ctrl.upload(ctx.Request.Context(), request)
 	return filesMetadata, newMethod, apiErr
 }
