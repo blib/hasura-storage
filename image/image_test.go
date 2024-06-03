@@ -24,43 +24,42 @@ func TestManipulate(t *testing.T) {
 		{
 			name:     "jpg",
 			filename: "testdata/nhost.jpg",
-			sum:      "0a3f081bd296958cfc99297ee9fb4cc2e5a1b22bebfded81c6e00e25caf84f36",
+			sum:      "12d79878831c605008cda90eb49623e969233b36f73c40646a908f6c1eb1a8e9",
 			size:     33399,
 			options: image.Options{
 				Height:  100,
 				Width:   300,
 				Blur:    2,
 				Quality: 50,
-				Format:  image.ImageTypeJPEG,
 			},
 		},
 		{
 			name:     "jpg",
 			filename: "testdata/nhost.jpg",
-			sum:      "cd9857da2c40b6c46d39abd0f18def2c9879c2a06a1702c131c17b2bfdb43268",
+			sum:      "12d79878831c605008cda90eb49623e969233b36f73c40646a908f6c1eb1a8e9",
 			size:     33399,
-			options:  image.Options{Width: 300, Height: 100, Blur: 2, Format: image.ImageTypeJPEG},
+			options:  image.Options{Width: 300, Height: 100, Blur: 2},
 		},
 		{
 			name:     "png",
 			filename: "testdata/nhost.png",
-			sum:      "58dd9460342dba786d9f1029198213fcd881433f6feb553b933f38fcbfc0a5f2",
+			sum:      "78cf83b463c94ecec430ca424d80650d07be5424929e67cfe978c0c753065745",
 			size:     68307,
-			options:  image.Options{Width: 300, Height: 100, Blur: 2, Format: image.ImageTypePNG},
+			options:  image.Options{Width: 300, Height: 100, Blur: 2},
 		},
 		{
 			name:     "webp",
 			filename: "testdata/nhost.webp",
-			sum:      "720eebe382c26b5fb8abf8552f282317074a4c9f6467aa8a60bb93a20f55e063",
+			sum:      "01b1371cab97acc5fbadb109ddb50eeece3577ddbbeeb384ec90cd5e724c66d3",
 			size:     17784,
-			options:  image.Options{Width: 300, Height: 100, Blur: 2, Format: image.ImageTypeWEBP},
+			options:  image.Options{Width: 300, Height: 100, Blur: 2},
 		},
 		{
 			name:     "jpg only blur",
 			filename: "testdata/nhost.jpg",
-			sum:      "0b038c3afbe8a848974874aad4fb11983d45ab84d9113eb4260c4ed34d2d03d6",
+			sum:      "aae488e2fdca124088dc4c3ca2daa1bb7423605d476be3c9318977044a206647",
 			size:     33399,
-			options:  image.Options{Blur: 2, Format: image.ImageTypeJPEG},
+			options:  image.Options{Blur: 2},
 		},
 	}
 
@@ -106,7 +105,7 @@ func BenchmarkManipulate(b *testing.B) {
 			orig,
 			33399,
 			io.Discard,
-			image.Options{Width: 300, Height: 100, Blur: 1.5, Format: image.ImageTypeJPEG},
+			image.Options{Width: 300, Height: 100, Blur: 1.5},
 		); err != nil {
 			b.Fatal(err)
 		}

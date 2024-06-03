@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -72,14 +73,7 @@ func getImageManipulationOptions(ctx *gin.Context, mimeType string) (image.Optio
 		Quality: q,
 	}
 	if !opts.IsEmpty() {
-		switch mimeType {
-		case "image/webp":
-			opts.Format = image.ImageTypeWEBP
-		case "image/png":
-			opts.Format = image.ImageTypePNG
-		case "image/jpeg":
-			opts.Format = image.ImageTypeJPEG
-		default:
+		if !strings.HasPrefix(mimeType, "image/") {
 			return image.Options{},
 				BadDataError(
 					fmt.Errorf( //nolint: goerr113

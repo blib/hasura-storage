@@ -15,22 +15,13 @@ const (
 	maxWorkers = 3
 )
 
-type ImageType int //nolint: revive
-
 var initialized int32 //nolint: gochecknoglobals
-
-const (
-	ImageTypeJPEG ImageType = iota
-	ImageTypePNG
-	ImageTypeWEBP
-)
 
 type Options struct {
 	Height  int
 	Width   int
 	Blur    float64
 	Quality int
-	Format  ImageType
 }
 
 func (o Options) IsEmpty() bool {
@@ -68,15 +59,7 @@ func (t *Transformer) Shutdown() {
 }
 
 func getExportParams(opts Options) *vips.ExportParams {
-	var ep *vips.ExportParams
-	switch opts.Format {
-	case ImageTypeJPEG:
-		ep = vips.NewDefaultJPEGExportParams()
-	case ImageTypePNG:
-		ep = vips.NewDefaultPNGExportParams()
-	case ImageTypeWEBP:
-		ep = vips.NewDefaultWEBPExportParams()
-	}
+	ep := vips.NewDefaultExportParams()
 	ep.Quality = opts.Quality
 
 	return ep
